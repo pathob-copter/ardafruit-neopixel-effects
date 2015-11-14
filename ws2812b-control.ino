@@ -11,7 +11,7 @@
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(LED_01_NUM, LED_01_PIN, NEO_GRB + NEO_KHZ800);
 
-int delayval = 80; // delay for half a second
+int delayval = 60; // delay for half a second
 
 bool increase = true;
 int index = 0;
