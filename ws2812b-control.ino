@@ -52,17 +52,7 @@ void loop() {
   
   pixels.setPixelColor(index, pixels.Color(color[RED],color[GREEN],color[BLUE]));
   
-  if (increase) {
-    ++index;
-    if (index == LED_01_NUM-1) {
-      increase = false;
-    }
-  } else {
-    --index;
-    if (index == 0) {
-      increase = true;
-    }
-  }
+  index = (index + 1) % LED_01_NUM;
   
   pixels.show();
   delay(delayval);
