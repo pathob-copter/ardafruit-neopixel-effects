@@ -9,18 +9,12 @@ class FlashLight
     FlashLight(Adafruit_NeoPixel stripe);
     ~FlashLight(){};
 
+    uint32_t getEffectColor() override;
     void run() override;
-    void setRange(uint16_t indexStart, uint16_t indexEnd);
-  
-  private:
 
-    uint8_t _numSteps;
-    uint8_t _activeStep;
+    using AbstractLedEffect::setColor;
     
-    uint16_t _ledIndexStart;
-    uint16_t _ledIndexEnd;
-
-    const uint8_t _divisor[7] = {1, 255, 1, 255, 255, 255, 255};
+    void setRange(uint16_t indexStart, uint16_t indexEnd);
 
 };
 

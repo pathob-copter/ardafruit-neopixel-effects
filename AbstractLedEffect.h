@@ -13,7 +13,10 @@ class AbstractLedEffect {
     AbstractLedEffect(Adafruit_NeoPixel stripe);
     ~AbstractLedEffect(){};
 
-    void run(uint32_t color);
+    void setColor(uint8_t r, uint8_t g, uint8_t b);
+    void setColor(uint32_t color);
+
+    virtual uint32_t getEffectColor() = 0;
     virtual void run() = 0;
 
     uint32_t colorGenerator();
@@ -36,6 +39,7 @@ class AbstractLedEffect {
     uint8_t  _activePrimaryColor;
     
     uint8_t  _divisor[7] = {1, 1, 1, 1, 1, 1, 1};
+    uint8_t  _brightness[8] = {255, 255, 255, 255, 255, 255, 255, 255};
 
 };
 

@@ -2,7 +2,7 @@
 #include "AbstractLedEffect.h"
 
 AbstractLedEffect::AbstractLedEffect(Adafruit_NeoPixel stripe) :
-  _stripe(stripe)
+  _stripe(stripe), _color(0)
 {
   _ledIndexStart = 0;
   _ledIndexEnd = stripe.numPixels() - 1;
@@ -13,10 +13,14 @@ AbstractLedEffect::AbstractLedEffect(Adafruit_NeoPixel stripe) :
   _primaryColors[AbstractLedEffect::Blue]  = 0;
 }
 
-void AbstractLedEffect::run(uint32_t color)
+void AbstractLedEffect::setColor(uint8_t r, uint8_t g, uint8_t b)
+{
+  _color = _stripe.Color(r,g,b);
+}
+
+void AbstractLedEffect::setColor(uint32_t color)
 {
   _color = color;
-  this->run();
 }
 
 void AbstractLedEffect::logColors(uint8_t red, uint8_t green, uint8_t blue)
