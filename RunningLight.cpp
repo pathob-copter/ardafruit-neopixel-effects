@@ -1,3 +1,4 @@
+#pragme once
 #include "RunningLight.h"
 
 RunningLight::RunningLight(Adafruit_NeoPixel stripe) :

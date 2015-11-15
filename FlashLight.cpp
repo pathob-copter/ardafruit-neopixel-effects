@@ -1,11 +1,11 @@
 #pragma once
-#include "AbstractLedEffect.h"
+#include "FlashLight.h"
 
-AbstractLedEffect::AbstractLedEffect(Adafruit_NeoPixel stripe) :
-  _stripe(stripe)
+FlashLight::FlashLight(Adafruit_NeoPixel stripe) :
+  AbstractLedEffect(stripe)
 {
   _ledIndexStart = 0;
-  _ledIndexEnd = stripe.numPixels() - 1;
+  _ledIndexEnd = _stripe.numPixels() - 1;
   _activeStep = 0;
   
   _primaryColors[AbstractLedEffect::Red]   = 255;
@@ -13,24 +13,9 @@ AbstractLedEffect::AbstractLedEffect(Adafruit_NeoPixel stripe) :
   _primaryColors[AbstractLedEffect::Blue]  = 0;
 }
 
-void AbstractLedEffect::run(uint32_t color)
+void FlashLight::run()
 {
-  _color = color;
-  this->run();
-}
 
-void AbstractLedEffect::logColors(uint8_t red, uint8_t green, uint8_t blue)
-{
-  Serial.print("Color - R:G:B");
-  Serial.print(red);
-  Serial.print(":");
-  Serial.print(green);
-  Serial.print(":");
-  Serial.print(blue);
-  Serial.print("\r\n\r\n");
-}
-
-uint32_t AbstractLedEffect::colorGenerator() {
   _primaryColors[_activePrimaryColor]--;
   _primaryColors[(_activePrimaryColor + 1) % NumPrimColors]++;
   
@@ -42,7 +27,23 @@ uint32_t AbstractLedEffect::colorGenerator() {
   uint8_t newGreen = _primaryColors[Green] / _divisor[_activeStep];
   uint8_t newBlue  = _primaryColors[Blue]  / _divisor[_activeStep];
   
-  _color = _stripe.Color(newRed, newGreen, newBlue);
+  uint32_t newColor = _stripe.Color(newRed, newGreen, newBlue);
+
+  for(int i = _ledIndexStart; i <= _ledIndexEnd; i++) {
+    _stripe.setPixelColor(i, newColor);
+  }
+  
   _activeStep = (_activeStep + 1) % sizeof(_divisor);
+  
+  _stripe.show();
+  logColors(newRed, newGreen, newBlue);
+}
+
+void FlashLight::setRange(uint16_t indexStart, uint16_t indexEnd)
+{
+  if (indexStart <= indexEnd) {
+    _ledIndexStart = indexStart;
+    _ledIndexEnd = indexEnd;
+  }
 }
 

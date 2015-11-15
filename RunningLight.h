@@ -1,3 +1,4 @@
+#pragma once
 #include "AbstractLedEffect.h"
 
 class RunningLight
