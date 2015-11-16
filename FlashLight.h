@@ -10,10 +10,11 @@ class FlashLight
     ~FlashLight(){};
 
     uint32_t getEffectColor() override;
+    void setEffectFunction(uint8_t brightness[16]);
     void run() override;
 
     using AbstractLedEffect::setColor;
-    
+
     void setRange(uint16_t indexStart, uint16_t indexEnd);
 
 };

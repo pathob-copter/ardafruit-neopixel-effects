@@ -38,8 +38,10 @@ class AbstractLedEffect {
     uint32_t _primaryColors[NumPrimColors];
     uint8_t  _activePrimaryColor;
     
+    uint8_t  _brightness[16] = {255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
+
+    // deprecated
     uint8_t  _divisor[7] = {1, 1, 1, 1, 1, 1, 1};
-    uint8_t  _brightness[8] = {255, 255, 255, 255, 255, 255, 255, 255};
 
 };
 

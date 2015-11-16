@@ -4,7 +4,7 @@
 FlashLight::FlashLight(Adafruit_NeoPixel stripe) :
   AbstractLedEffect(stripe)
 {
-  uint8_t brightness[8] = {255, 0, 255, 0, 0, 0, 0, 0};
+  uint8_t brightness[16] = {255, 0, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   memcpy(_brightness, brightness, sizeof(_brightness));
 }
 
@@ -18,6 +18,11 @@ uint32_t FlashLight::getEffectColor() {
   b = (b * _brightness[_activeStep]) >> 8;
   
   return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+}
+
+void FlashLight::setEffectFunction(uint8_t brightness[16])
+{
+  memcpy(_brightness, brightness, sizeof(_brightness));
 }
 
 void FlashLight::run()
