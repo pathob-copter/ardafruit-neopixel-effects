@@ -17,12 +17,3 @@ void DurableLight::run()
 uint32_t DurableLight::getEffectColor() {
   return _color;
 }
-
-void DurableLight::setRange(uint16_t indexStart, uint16_t indexEnd)
-{
-  if (indexStart <= indexEnd) {
-    _ledIndexStart = indexStart;
-    _ledIndexEnd = indexEnd;
-  }
-}
-

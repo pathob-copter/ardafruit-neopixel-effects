@@ -15,6 +15,7 @@ class AbstractLedEffect {
 
     void setColor(uint8_t r, uint8_t g, uint8_t b);
     void setColor(uint32_t color);
+    void setRange(uint16_t indexStart, uint16_t indexEnd);
 
     virtual uint32_t getEffectColor() = 0;
     virtual void run() = 0;
@@ -29,6 +30,7 @@ class AbstractLedEffect {
     uint32_t _color;
     uint16_t _numLEDs;
     
+	// must be set
     uint16_t _ledIndexStart;
     uint16_t _ledIndexEnd;
     

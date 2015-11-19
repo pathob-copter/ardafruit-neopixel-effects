@@ -15,7 +15,4 @@ class FlashLight
 
     using AbstractLedEffect::setColor;
 
-    void setRange(uint16_t indexStart, uint16_t indexEnd);
-
 };
-

@@ -33,11 +33,4 @@ void FlashLight::run()
   _activeStep = (_activeStep + 1) % sizeof(_brightness);
 }
 
-void FlashLight::setRange(uint16_t indexStart, uint16_t indexEnd)
-{
-  if (indexStart <= indexEnd) {
-    _ledIndexStart = indexStart;
-    _ledIndexEnd = indexEnd;
-  }
-}
 

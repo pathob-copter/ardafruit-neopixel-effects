@@ -23,6 +23,14 @@ void AbstractLedEffect::setColor(uint32_t color)
   _color = color;
 }
 
+void AbstractLedEffect::setRange(uint16_t indexStart, uint16_t indexEnd)
+{
+  if (indexStart <= indexEnd) {
+    _ledIndexStart = indexStart;
+    _ledIndexEnd = indexEnd;
+  }
+}
+
 void AbstractLedEffect::logColors(uint8_t red, uint8_t green, uint8_t blue)
 {
   Serial.print("Color - R:G:B");
@@ -33,20 +41,3 @@ void AbstractLedEffect::logColors(uint8_t red, uint8_t green, uint8_t blue)
   Serial.print(blue);
   Serial.print("\r\n\r\n");
 }
-
-uint32_t AbstractLedEffect::colorGenerator() {
-  _primaryColors[_activePrimaryColor]--;
-  _primaryColors[(_activePrimaryColor + 1) % NumPrimColors]++;
-  
-  if (_primaryColors[_activePrimaryColor] == 0) {
-    _activePrimaryColor = (_activePrimaryColor + 1) % NumPrimColors;
-  }
-
-  uint8_t newRed   = _primaryColors[Red]   / _divisor[_activeStep];
-  uint8_t newGreen = _primaryColors[Green] / _divisor[_activeStep];
-  uint8_t newBlue  = _primaryColors[Blue]  / _divisor[_activeStep];
-  
-  _color = _stripe.Color(newRed, newGreen, newBlue);
-  _activeStep = (_activeStep + 1) % sizeof(_divisor);
-}
-
