@@ -1,9 +1,9 @@
-#pragma once
 #include <Adafruit_NeoPixel.h>
-//#include "RunningLight.h"
+#include "RunningLight.h"
 #include "FlashLight.h"
 #include "DurableLight.h"
 
+/*
 #define LED_01_PIN      3
 #define LED_01_NUM      13
 
@@ -35,4 +35,9 @@ void loop() {
   led_01.show();
   delay(delayTime);
 }
+*/
+
+void setup() {}
+
+void loop() {}
 
