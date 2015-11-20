@@ -1,26 +1,25 @@
 #pragma once
 #include <Adafruit_NeoPixel.h>
+#include "AbstractBase.h"
 
-class AbstractLedEffect {
+class AbstractLedEffect
+  : AbstractBase
+{
 
   public:
 
-    static const uint8_t Red   = 0;
-    static const uint8_t Green = 1;
-    static const uint8_t Blue  = 2;
-    static const uint8_t NumPrimColors = 3;
+    using AbstractBase::Red;
+    using AbstractBase::Green;
+    using AbstractBase::Blue;
+    using AbstractBase::NumPrimColors;
 
     AbstractLedEffect(Adafruit_NeoPixel stripe)
       : _stripe(stripe)
       , _color(0)
+      , _activeStep(0)
     {
       _ledIndexStart = 0;
       _ledIndexEnd = stripe.numPixels() - 1;
-      _activeStep = 0;
-      
-      _primaryColors[AbstractLedEffect::Red]   = 255;
-      _primaryColors[AbstractLedEffect::Green] = 0;
-      _primaryColors[AbstractLedEffect::Blue]  = 0;
     };
 
     ~AbstractLedEffect(){};

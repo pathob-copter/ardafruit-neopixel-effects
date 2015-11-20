@@ -2,7 +2,8 @@
 #include "AbstractLedEffect.h"
 
 class DurableLight
-  : AbstractLedEffect {
+  : AbstractLedEffect
+{
 
   public:
 

@@ -2,6 +2,8 @@
 #include "RunningLight.h"
 #include "FlashLight.h"
 #include "DurableLight.h"
+#include "ColorGenerator.h"
+#include "List.h"
 
 /*
 #define LED_01_PIN      3
