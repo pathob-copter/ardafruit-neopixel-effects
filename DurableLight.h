@@ -7,23 +7,16 @@ class DurableLight
 
   public:
 
-    DurableLight(Adafruit_NeoPixel stripe)
-      : LightEffect(stripe)
-    {
-      // ...
-    }
+    using LightEffect::LightEffect;
 
     ~DurableLight(){};
-
-    uint32_t getEffectColor() override
-    {
-      return _color;
-    }
     
     void run() override
     {
+      Color color = _colorGenerator.getNextColor();
+      
       for(int i = _ledIndexStart; i <= _ledIndexEnd; i++) {
-        _stripe.setPixelColor(i, getEffectColor());
+        _stripe.setPixelColor(i, color.toInt());
       }
     }
 

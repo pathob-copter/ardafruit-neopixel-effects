@@ -17,6 +17,24 @@ class AbstractBase {
 };
 
 
+// Node class
+
+template<typename N>
+class Node
+{
+  
+  public:
+  
+    Node(N item) : _item(item), _prev(NULL), _next(NULL) {};
+    Node(N item, Node<N> *prev, Node<N> *next) : _item(item), _prev(prev), _next(next) {};
+
+    N _item;
+    Node<N> *_next;
+    Node<N> *_prev;
+    
+};
+
+
 // List class
 
 template<typename T>
@@ -32,30 +50,19 @@ class List {
 
     T first() const;
     T last() const;
+
+    T iterate();
     T get(uint32_t index) const;
 
     uint32_t size() const;
 
   private:
 
-    template<typename N>
-    class Node
-    {
-      public:
-        Node(N item)
-          : _item(item), _prev(NULL), _next(NULL) {};
-        Node(N item, Node<N> *prev, Node<N> *next)
-          : _item(item), _prev(prev), _next(next) {};
-
-        N _item;
-        Node<N> *_next;
-        Node<N> *_prev;
-    };
-
-    uint32_t _size;
-
     Node<T>* _first;
     Node<T>* _last;
+    Node<T>* _iterate;
+
+    uint32_t _size;
 
 };
 
@@ -75,6 +82,8 @@ class Color {
     uint8_t green();
     uint8_t blue();
 
+    void applyBrightness(uint8_t brightness);
+
   private:
 
     uint32_t _color;
@@ -92,15 +101,28 @@ class ColorGenerator
     using AbstractBase::Blue;
     using AbstractBase::NumPrimColors;
 
+    ColorGenerator();
+    ColorGenerator(Color color);
     ColorGenerator(uint32_t color);
     ~ColorGenerator() {};
 
-    uint32_t getNextColor();
+    void addColor(Color color);
+
+    Color getNextColor();
   
   private:
 
+    /** 
+     * All colors that has to be gone through 
+     */
     List<Color> _colors;
-    
+
+    /**
+     * Current (intermediate) color in color generating process
+     */
+    Color _currentColor;
+
+    // deprecated
     uint32_t _primaryColors[NumPrimColors];
 
 };
@@ -113,6 +135,7 @@ List<T>::List()
 {
   _first = NULL;
   _last = NULL;
+  _iterate = NULL;
   _size = 0;
 }
 
@@ -153,6 +176,22 @@ template<typename T>
 T List<T>::last() const
 {
   return _last->_item;
+}
+
+
+template<typename T>
+T List<T>::iterate()
+{  
+  if (_iterate == NULL || _iterate->_next == NULL)
+  {
+    _iterate = _first;
+  }
+  else
+  {
+    _iterate = _iterate->_next;
+  }
+
+  return _iterate->_item;
 }
 
 template<typename T>
@@ -199,54 +238,63 @@ uint32_t Color::toInt()
 
 uint8_t Color::red()
 {
-  // Todo
-  return 0;
+  return (_color >> 16) & 255;
 }
 
 uint8_t Color::green()
 {
-  // Todo
-  return 0;
+  return (_color >> 8) & 255;
 }
 
 uint8_t Color::blue()
 {
-  // Todo
-  return 0;
+  return _color & 255;
+}
+
+void Color::applyBrightness(uint8_t brightness)
+{
+  uint8_t r = (red() * brightness) >> 8;
+  uint8_t g = (green() * brightness) >> 8;
+  uint8_t b = (blue() * brightness) >> 8;
+
+  _color = ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
 }
 
 
 // Color Generator implementation
 
-ColorGenerator::ColorGenerator(uint32_t color)
+ColorGenerator::ColorGenerator()
 {
-  Color c(color);
-  _colors.add(c);
-  /*
-  _primaryColors[LightEffect::Red]   = 255;
-  _primaryColors[LightEffect::Green] = 0;
-  _primaryColors[LightEffect::Blue]  = 0;
-  */
+  // Todo
+  // Variables are not defined properly with empty constructor
 }
 
-uint32_t ColorGenerator::getNextColor()
+ColorGenerator::ColorGenerator(Color color)
 {
-  /*
-  _primaryColors[_activePrimaryColor]--;
-  _primaryColors[(_activePrimaryColor + 1) % NumPrimColors]++;
-
-  if (_primaryColors[_activePrimaryColor] == 0) {
-    _activePrimaryColor = (_activePrimaryColor + 1) % NumPrimColors;
-  }
-
-  uint8_t newRed   = _primaryColors[Red]   / _divisor[_activeStep];
-  uint8_t newGreen = _primaryColors[Green] / _divisor[_activeStep];
-  uint8_t newBlue  = _primaryColors[Blue]  / _divisor[_activeStep];
-
-  _activeStep = (_activeStep + 1) % sizeof(_divisor);
-
-  _color = _stripe.Color(newRed, newGreen, newBlue);
-  */
-
-  return _colors.get(0).toInt();
+  _colors.add(color);
+  _currentColor = color;
 }
+
+ColorGenerator::ColorGenerator(uint32_t colorInt)
+{
+  Color color(colorInt);
+  _colors.add(color);
+  _currentColor = color;
+}
+
+void ColorGenerator::addColor(Color color)
+{
+  _colors.add(color);
+}
+
+Color ColorGenerator::getNextColor()
+{
+  Color nextColor;
+
+  // Todo:
+  // calculate next color of two generator colors
+  // using the actual step between these colors
+
+  return nextColor;
+}
+

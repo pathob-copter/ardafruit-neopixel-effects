@@ -6,15 +6,7 @@ class RunningLight
 
   public:
 
-    RunningLight(Adafruit_NeoPixel stripe)
-      : LightEffect(stripe)
-    {
-      _activeStep = 0;
-      _primaryColors[Red]   = 255;
-      _primaryColors[Green] = 0;
-      _primaryColors[Blue]  = 0;
-    }
-
+    using LightEffect::LightEffect;
     ~RunningLight(){};
 
     void setIsReverted(bool reverted)
@@ -24,13 +16,14 @@ class RunningLight
 	
     void run() override
     {
-      for(int i = _numLEDs; i > 0; i--) {
+      Color color = _colorGenerator.getNextColor();
+      color.applyBrightness(_brightness->iterate());
+      
+      for(int i = _ledIndexEnd; i > _ledIndexStart; i--) {
         _stripe.setPixelColor(i, _stripe.getPixelColor(i - 1));
       }
   
-      _stripe.setPixelColor(0, getEffectColor());
-      
-      _activeStep = (_activeStep + 1) % _brightness->size();
+      _stripe.setPixelColor(0, color.toInt());
     }
   
   private:
