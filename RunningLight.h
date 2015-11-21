@@ -1,13 +1,13 @@
 #pragma once
-#include "AbstractLightEffect.h"
+#include "LightEffect.h"
 
 class RunningLight
-  : AbstractLightEffect {
+  : LightEffect {
 
   public:
 
     RunningLight(Adafruit_NeoPixel stripe)
-      : AbstractLightEffect(stripe)
+      : LightEffect(stripe)
     {
       _activeStep = 0;
       _primaryColors[Red]   = 255;

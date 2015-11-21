@@ -1,13 +1,13 @@
 #pragma once
-#include "AbstractLightEffect.h"
+#include "LightEffect.h"
 
 class FlashLight
-  : AbstractLightEffect {
+  : LightEffect {
 
   public:
 
     FlashLight(Adafruit_NeoPixel stripe)
-      : AbstractLightEffect(stripe)
+      : LightEffect(stripe)
     {
       uint8_t brightness[16] = {255, 0, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       _brightness = new List<uint8_t>(brightness, 16);
@@ -41,6 +41,6 @@ class FlashLight
       _activeStep = (_activeStep + 1) % sizeof(_brightness);
     }
 
-    using AbstractLightEffect::setColor;
+    using LightEffect::setColor;
 
 };

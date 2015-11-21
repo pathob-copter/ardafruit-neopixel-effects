@@ -2,8 +2,6 @@
 #include "RunningLight.h"
 #include "FlashLight.h"
 #include "DurableLight.h"
-#include "ColorGenerator.h"
-#include "List.h"
 
 String array[] = {"Hello", "big", "world"};
 List<String>* list = new List<String>(array, 3);
