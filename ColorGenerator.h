@@ -19,8 +19,7 @@ class ColorGenerator
   
   private:
 
-    // should be a list
-    uint32_t _color;
+    List<Color> _colors;
 
     
     uint32_t _primaryColors[NumPrimColors];
@@ -28,8 +27,9 @@ class ColorGenerator
 };
 
 ColorGenerator::ColorGenerator(uint32_t color)
- : _color(color)
 {
+  Color c(color);
+  _colors.add(c);
   /*
   _primaryColors[AbstractLightEffect::Red]   = 255;
   _primaryColors[AbstractLightEffect::Green] = 0;
@@ -56,6 +56,6 @@ uint32_t ColorGenerator::getNextColor()
   _color = _stripe.Color(newRed, newGreen, newBlue);
   */
 
-  return _color;
+  return _colors.get(0).toInt();
 }
 

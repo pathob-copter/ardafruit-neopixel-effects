@@ -70,9 +70,12 @@ class AbstractLightEffect
     // must be set
     uint16_t _ledIndexStart;
     uint16_t _ledIndexEnd;
-    
+
+    // effects
     uint8_t _numSteps;
     uint8_t _activeStep;
+
+    Color color;
 
     uint32_t _primaryColors[NumPrimColors];
     uint8_t  _activePrimaryColor;
