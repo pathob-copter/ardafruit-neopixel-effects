@@ -5,15 +5,12 @@
 #include "ColorGenerator.h"
 #include "List.h"
 
-List<String> list;
+String array[] = {"Hello", "big", "world"};
+List<String>* list = new List<String>(array, 3);
 
 void setup()
 {
   Serial.begin(115200);
-  
-  list.add("Hello");
-  list.add("big");
-  list.add("world");
   
   Serial.println("");
 }
@@ -22,7 +19,7 @@ void loop()
 {
   //Serial.println((String) list.first());
   //Serial.println((String) list.last());
-  Serial.println((String) list.get(3));
+  Serial.println((String) list->get(2));
   //Serial.println((String) list.get(1));
   //Serial.println((String) list.get(2));
   

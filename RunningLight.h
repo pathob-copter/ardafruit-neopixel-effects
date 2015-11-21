@@ -1,13 +1,13 @@
 #pragma once
-#include "AbstractLedEffect.h"
+#include "AbstractLightEffect.h"
 
 class RunningLight
-  : AbstractLedEffect {
+  : AbstractLightEffect {
 
   public:
 
     RunningLight(Adafruit_NeoPixel stripe)
-      : AbstractLedEffect(stripe)
+      : AbstractLightEffect(stripe)
     {
       _activeStep = 0;
       _primaryColors[Red]   = 255;
@@ -30,14 +30,12 @@ class RunningLight
   
       _stripe.setPixelColor(0, getEffectColor());
       
-      _activeStep = (_activeStep + 1) % sizeof(_divisor);
+      _activeStep = (_activeStep + 1) % _brightness->size();
     }
   
   private:
 
     bool _reverted;
-
-    const uint8_t _divisor[7] = {20, 1, 3, 8, 20, 100, 255};
 
 };
 

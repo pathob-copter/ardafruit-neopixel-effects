@@ -10,7 +10,7 @@ class AbstractBase {
     static const uint8_t NumPrimColors = 3;
 
     AbstractBase(){};
-    ~AbstractBase(){};
+    virtual ~AbstractBase() = 0;
 
 };
 

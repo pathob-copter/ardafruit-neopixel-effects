@@ -1,14 +1,14 @@
 #pragma once
-#include "AbstractLedEffect.h"
+#include "AbstractLightEffect.h"
 
 class DurableLight
-  : AbstractLedEffect
+  : AbstractLightEffect
 {
 
   public:
 
     DurableLight(Adafruit_NeoPixel stripe)
-      : AbstractLedEffect(stripe)
+      : AbstractLightEffect(stripe)
     {
       // ...
     }
@@ -27,7 +27,7 @@ class DurableLight
       }
     }
 
-    using AbstractLedEffect::setColor;
+    using AbstractLightEffect::setColor;
     
     void setRange(uint16_t indexStart, uint16_t indexEnd);
 

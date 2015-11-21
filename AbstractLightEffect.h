@@ -1,8 +1,9 @@
 #pragma once
 #include <Adafruit_NeoPixel.h>
 #include "AbstractBase.h"
+#include "List.h"
 
-class AbstractLedEffect
+class AbstractLightEffect
   : AbstractBase
 {
 
@@ -13,7 +14,7 @@ class AbstractLedEffect
     using AbstractBase::Blue;
     using AbstractBase::NumPrimColors;
 
-    AbstractLedEffect(Adafruit_NeoPixel stripe)
+    AbstractLightEffect(Adafruit_NeoPixel stripe)
       : _stripe(stripe)
       , _color(0)
       , _activeStep(0)
@@ -22,7 +23,7 @@ class AbstractLedEffect
       _ledIndexEnd = stripe.numPixels() - 1;
     };
 
-    ~AbstractLedEffect(){};
+    ~AbstractLightEffect(){};
 
     void setColor(uint8_t r, uint8_t g, uint8_t b)
     {
@@ -75,8 +76,9 @@ class AbstractLedEffect
 
     uint32_t _primaryColors[NumPrimColors];
     uint8_t  _activePrimaryColor;
-    
-    uint8_t  _brightness[16] = {255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
+
+
+    List<uint8_t>* _brightness = new List<uint8_t>();
 
     // deprecated
     uint8_t  _divisor[7] = {1, 1, 1, 1, 1, 1, 1};

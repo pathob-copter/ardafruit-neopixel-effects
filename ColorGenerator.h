@@ -31,9 +31,9 @@ ColorGenerator::ColorGenerator(uint32_t color)
  : _color(color)
 {
   /*
-  _primaryColors[AbstractLedEffect::Red]   = 255;
-  _primaryColors[AbstractLedEffect::Green] = 0;
-  _primaryColors[AbstractLedEffect::Blue]  = 0;
+  _primaryColors[AbstractLightEffect::Red]   = 255;
+  _primaryColors[AbstractLightEffect::Green] = 0;
+  _primaryColors[AbstractLightEffect::Blue]  = 0;
   */
 }
 
