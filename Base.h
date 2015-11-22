@@ -75,6 +75,7 @@ class Color {
 
     Color();
     Color(uint32_t color);
+    Color(uint8_t r, uint8_t g, uint8_t b);
 
     uint32_t toInt();
     
@@ -91,39 +92,30 @@ class Color {
 };
 
 class ColorGenerator
-  : AbstractBase
 {
 
   public:
 
-    using AbstractBase::Red;
-    using AbstractBase::Green;
-    using AbstractBase::Blue;
-    using AbstractBase::NumPrimColors;
-
     ColorGenerator();
-    ColorGenerator(Color color);
+    ColorGenerator(Color* color);
     ColorGenerator(uint32_t color);
     ~ColorGenerator() {};
 
-    void addColor(Color color);
+    void addColor(Color* color);
 
-    Color getNextColor();
-  
-  private:
+    Color* getNextColor();
 
     /** 
      * All colors that has to be gone through 
      */
-    List<Color> _colors;
+    List<Color*>* _colors;
+  
+  private:
 
     /**
      * Current (intermediate) color in color generating process
      */
-    Color _currentColor;
-
-    // deprecated
-    uint32_t _primaryColors[NumPrimColors];
+    Color* _currentColor;
 
 };
 
@@ -155,7 +147,7 @@ void List<T>::add(T item)
   Node<T>* prev = _last;
   Node<T>* node = new Node<T>(item, prev, NULL);
   _last = node;
-  if (prev != NULL)
+  if (prev)
   {
     prev->_next = node;
   }
@@ -231,6 +223,11 @@ Color::Color(uint32_t color)
   _color = color;
 }
 
+Color::Color(uint8_t r, uint8_t g, uint8_t b)
+{
+  _color = ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+}
+
 uint32_t Color::toInt()
 {
   return _color;
@@ -257,7 +254,9 @@ void Color::applyBrightness(uint8_t brightness)
   uint8_t g = (green() * brightness) >> 8;
   uint8_t b = (blue() * brightness) >> 8;
 
-  _color = ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+  // Todo: Should use a static function instead
+  Color color(r, g, b);
+  _color = color.toInt();
 }
 
 
@@ -265,36 +264,36 @@ void Color::applyBrightness(uint8_t brightness)
 
 ColorGenerator::ColorGenerator()
 {
-  // Todo
-  // Variables are not defined properly with empty constructor
+  _colors = new List<Color*>();
 }
 
-ColorGenerator::ColorGenerator(Color color)
+ColorGenerator::ColorGenerator(Color* color)
+  : ColorGenerator()
 {
-  _colors.add(color);
+  _colors->add(color);
   _currentColor = color;
 }
 
 ColorGenerator::ColorGenerator(uint32_t colorInt)
+  : ColorGenerator()
 {
-  Color color(colorInt);
-  _colors.add(color);
+  Color* color = new Color(colorInt);
+  _colors->add(color);
   _currentColor = color;
 }
 
-void ColorGenerator::addColor(Color color)
+void ColorGenerator::addColor(Color* color)
 {
-  _colors.add(color);
+  _colors->add(color);
 }
 
-Color ColorGenerator::getNextColor()
+Color* ColorGenerator::getNextColor()
 {
-  Color nextColor;
-
+  
   // Todo:
   // calculate next color of two generator colors
   // using the actual step between these colors
 
-  return nextColor;
+  return new Color(_colors->iterate()->toInt());
 }
 

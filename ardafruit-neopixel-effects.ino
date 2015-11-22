@@ -3,28 +3,30 @@
 #include "FlashLight.h"
 #include "DurableLight.h"
 
-String array[] = {"Hello", "big", "world"};
-List<String>* list = new List<String>(array, 3);
+#define LED_01_PIN      3
+#define LED_01_NUM      13
+
+Adafruit_NeoPixel* led_01 = new Adafruit_NeoPixel(LED_01_NUM, LED_01_PIN, NEO_GRB + NEO_KHZ800);
+
+Color* orange = new Color(255,200,10);
+FlashLight* beagle = new FlashLight(led_01, orange);
 
 void setup()
 {
   Serial.begin(115200);
-  
-  Serial.println("");
+  delay(1000);
+
+  led_01->begin();
+  beagle->setRange(0, 4);
 }
 
 void loop()
 {
-  //Serial.println((String) list.first());
-  //Serial.println((String) list.last());
-  Serial.println((String) list->get(2));
-  //Serial.println((String) list.get(1));
-  //Serial.println((String) list.get(2));
-  
-  Serial.println("");
+  beagle->run();
+  led_01->show();
+
   delay(1000);
 }
-
 
 /*
 #define LED_01_PIN      3
