@@ -17,7 +17,7 @@ void setup()
   delay(1000);
 
   led_01->begin();
-  beagle->setRange(0, 4);
+  beagle->setRange(0, 0);
 }
 
 void loop()

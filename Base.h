@@ -255,8 +255,9 @@ void Color::applyBrightness(uint8_t brightness)
   uint8_t b = (blue() * brightness) >> 8;
 
   // Todo: Should use a static function instead
-  Color color(r, g, b);
-  _color = color.toInt();
+  // Todo: unprecise result
+  Color* color = new Color(r, g, b);
+  _color = color->toInt();
 }
 
 
