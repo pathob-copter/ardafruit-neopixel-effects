@@ -1,44 +1,56 @@
 #pragma once
+
+#ifndef ADAFRUITNEOPIXELEFFECTS_DURABLELIGHT_H
+#define ADAFRUITNEOPIXELEFFECTS_DURABLELIGHT_H
+
 #include "LightEffect.h"
 
-class DurableLight
-  : public LightEffect
+namespace AdafruitNeopixelEffects
 {
 
-  public:
+  class _DurableLight
+    : public _LightEffect
+  {
   
-    DurableLight(Adafruit_NeoPixel* stripe)
-      : LightEffect(stripe)
-    {
-      // _brightness.add(255);
-    };
-
-    DurableLight(Adafruit_NeoPixel* stripe, Color* color)
-      : LightEffect(stripe, color)
-    {
-      // _brightness.add(255);
-    };
-
-    DurableLight(Adafruit_NeoPixel* stripe, ColorGenerator* colorGenerator)
-      : LightEffect(stripe, colorGenerator)
-    {
-      // _brightness.add(255);
-    };
-
-    ~DurableLight(){};
+    public:
     
-    void run() override
-    {
-      Color* color = _colorGenerator->getNextColor();
+      _DurableLight(Adafruit_NeoPixel* stripe)
+        : _LightEffect(stripe)
+      {
+        // _brightness.add(255);
+      };
+  
+      _DurableLight(Adafruit_NeoPixel* stripe, Color color)
+        : _LightEffect(stripe, color)
+      {
+        // _brightness.add(255);
+      };
+  
+      _DurableLight(Adafruit_NeoPixel* stripe, ColorGenerator colorGenerator)
+        : _LightEffect(stripe, colorGenerator)
+      {
+        // _brightness.add(255);
+      };
+  
+      ~_DurableLight(){};
       
-      for(int i = _ledIndexStart; i <= _ledIndexEnd; i++) {
-        _stripe->setPixelColor(i, color->toInt());
+      void run() override
+      {
+        Color color = _colorGenerator->getNextColor();
+        
+        for(int i = _ledIndexStart; i <= _ledIndexEnd; i++) {
+          _stripe->setPixelColor(i, color->toInt());
+        }
       }
-    }
+  
+      using _LightEffect::setColor;
+      
+      void setRange(uint16_t indexStart, uint16_t indexEnd);
+  
+  };
+  
+  typedef boost::shared_ptr<_DurableLight> DurableLight;
+  
+}
 
-    using LightEffect::setColor;
-    
-    void setRange(uint16_t indexStart, uint16_t indexEnd);
-
-};
-
+#endif

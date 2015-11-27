@@ -1,34 +1,46 @@
 #pragma once
-#include "LightEffect.h"
 
-class RunningLight
-  : public LightEffect {
+#ifndef ADAFRUITNEOPIXELEFFECTS_RUNNINGLIGHT_H
+#define ADAFRUITNEOPIXELEFFECTS_RUNNINGLIGHT_H
 
-  public:
+#include "Lighteffect.h"
 
-    using LightEffect::LightEffect;
-    ~RunningLight(){};
+namespace AdafruitNeopixelEffects
+{
 
-    void setIsReverted(bool reverted)
-    {
-      _reverted = reverted;
-    }
-	
-    void run() override
-    {
-      Color* color = _colorGenerator->getNextColor();
-      color->applyBrightness(_brightness->iterate());
-      
-      for(int i = _ledIndexEnd; i > _ledIndexStart; i--) {
-        _stripe->setPixelColor(i, _stripe->getPixelColor(i - 1));
+  class _RunningLight
+    : public _LightEffect {
+  
+    public:
+  
+      using _LightEffect::_LightEffect;
+      ~_RunningLight(){};
+  
+      void setIsReverted(bool reverted)
+      {
+        _reverted = reverted;
       }
+  	
+      void run() override
+      {
+        Color color = _colorGenerator->getNextColor();
+        color->applyBrightness(_brightness->iterate());
+        
+        for(int i = _ledIndexEnd; i > _ledIndexStart; i--) {
+          _stripe->setPixelColor(i, _stripe->getPixelColor(i - 1));
+        }
+    
+        _stripe->setPixelColor(0, color->toInt());
+      }
+    
+    private:
   
-      _stripe->setPixelColor(0, color->toInt());
-    }
+      bool _reverted;
   
-  private:
+  };
+  
+  typedef boost::shared_ptr<_RunningLight> RunningLight;
 
-    bool _reverted;
+}
 
-};
-
+#endif

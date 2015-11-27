@@ -1,1 +1,1 @@
-# ardafruit-neopixel-effects
+# adafruit-neopixel-effects
