@@ -14,19 +14,19 @@ namespace AdafruitNeopixelEffects
   
     public:
     
-      _DurableLight(Adafruit_NeoPixel* stripe)
+      _DurableLight(Adafruit_NeoPixel stripe)
         : _LightEffect(stripe)
       {
         // _brightness.add(255);
       };
   
-      _DurableLight(Adafruit_NeoPixel* stripe, Color color)
+      _DurableLight(Adafruit_NeoPixel stripe, const _Color& color)
         : _LightEffect(stripe, color)
       {
         // _brightness.add(255);
       };
   
-      _DurableLight(Adafruit_NeoPixel* stripe, ColorGenerator colorGenerator)
+      _DurableLight(Adafruit_NeoPixel stripe, const _ColorGenerator& colorGenerator)
         : _LightEffect(stripe, colorGenerator)
       {
         // _brightness.add(255);
@@ -36,10 +36,10 @@ namespace AdafruitNeopixelEffects
       
       void run() override
       {
-        Color color = _colorGenerator->getNextColor();
+        _Color color = _colorGenerator.getNextColor();
         
         for(int i = _ledIndexStart; i <= _ledIndexEnd; i++) {
-          _stripe->setPixelColor(i, color->toInt());
+          _stripe.setPixelColor(i, color.toInt());
         }
       }
   
@@ -49,7 +49,7 @@ namespace AdafruitNeopixelEffects
   
   };
   
-  typedef boost::shared_ptr<_DurableLight> DurableLight;
+  typedef _DurableLight* DurableLight;
   
 }
 

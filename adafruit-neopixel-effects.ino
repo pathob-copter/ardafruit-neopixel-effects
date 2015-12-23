@@ -2,39 +2,54 @@
 
 #include <Adafruit_NeoPixel.h>
 #include <StandardCplusplus.h>
-#include <boost_1_51_0.h>
 
 #include "Color.h"
 #include "RunningLight.h"
 #include "FlashLight.h"
 #include "DurableLight.h"
 
-#define LED_01_PIN      3
-#define LED_01_NUM      13
+#define LED_01_PIN      2
+#define LED_01_NUM      2
 
 using namespace AdafruitNeopixelEffects;
 
-Adafruit_NeoPixel* led_01 = new Adafruit_NeoPixel(LED_01_NUM, LED_01_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel ledF = Adafruit_NeoPixel(LED_01_NUM, LED_01_PIN, NEO_GRB + NEO_KHZ800);
 
-Color orange = boost::make_shared<_Color>(255,200,10);
-FlashLight beagle = boost::make_shared<_FlashLight>(led_01, orange);
+_Color orange(255,200,10);
+_Color red(255,0,0);
+_Color blue(0,0,255);
+_FlashLight beagleF(ledF);
 
 void setup()
 {
   Serial.begin(115200);
+  ledF.begin();
   delay(1000);
+  
+  Serial.print("Setup: ");
+  Serial.println(blue.toInt());
 
-  //led_01->begin();
-  //beagle->setRange(0, 0);
+  beagleF.setColor(blue);
+  beagleF.setRange(0, 1);
+
+  beagleF.run();
+  ledF.show();
+
+  // _Node<_Color>* node = (_Node<_Color>*) 928;
+  // Serial.print("Test: ");
+  // Serial.print(node->_item.toInt());
 }
 
 void loop()
 {
-  Serial.println(orange->toInt());
-  //beagle->run();
-  //led_01->show();
+  Serial.print("Loop: ");
+  Serial.println(orange.toInt());
+  
+  beagleF.run();
+  // ledF.setPixelColor(0, ledF.Color(0,150,0));
+  ledF.show();
 
-  delay(1000);
+  delay(6000);
 }
 
 /*

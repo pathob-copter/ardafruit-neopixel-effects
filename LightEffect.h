@@ -13,44 +13,40 @@ namespace AdafruitNeopixelEffects
   
     public:
   
-      _LightEffect(Adafruit_NeoPixel* stripe)
+      _LightEffect(Adafruit_NeoPixel stripe)
       {
         _stripe = stripe;
         _ledIndexStart = 0;
-        _ledIndexEnd = stripe->numPixels() - 1;
+        _ledIndexEnd = stripe.numPixels() - 1;
         // FIXME
-        _brightness; // = boost::make_shared<List<uint8_t>(_List<uint8_t>());
-        _colorGenerator = boost::make_shared<_ColorGenerator>();
+        // _brightness;
+        _colorGenerator = _ColorGenerator();
       };
   
-      _LightEffect(Adafruit_NeoPixel* stripe, Color color)
+      _LightEffect(Adafruit_NeoPixel stripe, const _Color& color)
         : _LightEffect(stripe)
       {
-        _colorGenerator = boost::make_shared<_ColorGenerator>(color);
+        _colorGenerator = _ColorGenerator(color);
       };
   
-      _LightEffect(Adafruit_NeoPixel* stripe, ColorGenerator colorGenerator)
+      _LightEffect(Adafruit_NeoPixel stripe, _ColorGenerator const& colorGenerator)
         : _LightEffect(stripe)
       {
         _colorGenerator = colorGenerator;
       };
   
       ~_LightEffect(){};
-  
-      void setColor(uint8_t r, uint8_t g, uint8_t b)
-      {
-        // Todo: Should not use a (specific) neopixel instance to get color from it
-        // _color = _stripe->Color(r,g,b);
-      };
       
-      void setColor(uint32_t color)
+      void setColor(const _Color& color)
       {
-        //_color = color;
+        Serial.print("setColor: ");
+        Serial.println(color.toInt());
+        _colorGenerator = _ColorGenerator(color);
       };
   
-      void addColor(Color color)
+      void addColor(_Color color)
       {
-        _colorGenerator->addColor(color);
+        _colorGenerator.addColor(color);
       }
       
       void setRange(uint16_t indexStart, uint16_t indexEnd)
@@ -63,27 +59,27 @@ namespace AdafruitNeopixelEffects
   
       void addBrightnessElement(uint8_t brightness)
       {
-        _brightness->add(brightness);
+        // _brightness->add(brightness);
       }
       
       virtual void run() = 0;
       
       // light effect attributes
-      ColorGenerator _colorGenerator;
-      Uint8List _brightness;
+      _ColorGenerator _colorGenerator;
+      // Uint8List _brightness;
       
     protected:
   
       virtual void init() = 0;
       
       // stripe attributes
-      Adafruit_NeoPixel* _stripe;
+      Adafruit_NeoPixel _stripe;
       uint16_t _ledIndexStart;
       uint16_t _ledIndexEnd;
   
   };
   
-  typedef boost::shared_ptr<_LightEffect> LightEffect;
+  typedef _LightEffect* LightEffect;
 
 }
 

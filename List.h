@@ -8,22 +8,19 @@
 namespace AdafruitNeopixelEffects
 {
 
-  template<typename T>
+  template<class T>
   class _Node
   {
     public:
       _Node(T item) : _item(item) {};
-      _Node(T item, boost::shared_ptr<_Node<T> > prev) : _item(item), _prev(prev) {};
-      _Node(T item, boost::shared_ptr<_Node<T> > prev, boost::shared_ptr<_Node<T> > next) : _item(item), _prev(prev), _next(next) {};
+      _Node(T item, _Node<T>* prev, _Node<T>* next = 0) : _prev(prev), _next(next) {_item = item;};
   
       T _item;
-      boost::shared_ptr<_Node<T> > _next;
-      boost::shared_ptr<_Node<T> > _prev;
+      _Node<T>* _next;
+      _Node<T>* _prev;
   };
-
-  // typedef boost::shared_ptr<_Node> Node;
   
-  template<typename T>
+  template<class T>
   class _List
   {
   
@@ -31,7 +28,10 @@ namespace AdafruitNeopixelEffects
   
       _List();
       _List(T array[], uint32_t size);
-      ~_List(){};
+      _List(const _List<T>& other);
+      ~_List();
+
+      _List& operator=(const _List<T>& other);
   
       void add(T item);
   
@@ -42,28 +42,34 @@ namespace AdafruitNeopixelEffects
       T get(uint32_t index) const;
   
       uint32_t size() const;
+      bool empty() const;
+      
+      _Node<T>* _first;
+      _Node<T>* _last;
   
     private:
+
+      void copy(const _List<T>& other);
+      void clear();
   
-      boost::shared_ptr<_Node<T> > _first;
-      boost::shared_ptr<_Node<T> > _last;
-      boost::shared_ptr<_Node<T> > _iterate;
+      _Node<T>* _iterate;
   
       uint32_t _size;
   
   };
   
-  typedef boost::shared_ptr<_List<Color> > ColorList;
+  typedef _List<_Color> _ColorList;
+  typedef _List<_Color>* ColorList;
   
 }
 
-
 using namespace AdafruitNeopixelEffects;
 
-template<typename T>
-_List<T>::_List()
+template<class T>
+_List<T>::_List() :
+  _first(0), _last(0), _iterate(0), _size(0)
 {
-  _size = 0;
+  Serial.println("Create List");
 }
 
 template<class T>
@@ -76,40 +82,70 @@ _List<T>::_List(T array[], uint32_t size)
   }
 }
 
-template<typename T>
+template<class T>
+_List<T>::_List(const _List<T>& other)
+{
+  //TODO
+}
+
+template<class T>
+_List<T>::~_List()
+{
+  clear();
+}
+
+template<class T>
+_List<T>& _List<T>::operator=(const _List<T>& other)
+{
+  //TODO
+}
+
+template<class T>
 void _List<T>::add(T item)
 {
-  boost::shared_ptr<_Node<T> > prev = _last;
-  // FIXME
-  boost::shared_ptr<_Node<T> > node = boost::make_shared<_Node<T> >(item, prev);
+  Serial.print("add: ");
+  Serial.println(item.toInt());
+  
+  _Node<T>* prev = _last;
+  _Node<T>* node = new _Node<T>(item, prev);
+
+  Serial.print("Node: ");
+  Serial.println(node->_item.toInt());
+  
   _last = node;
-  if (prev)
+  if (prev != 0)
   {
     prev->_next = node;
   }
   else
   {
+    Serial.println("_first = node;");
     _first = node;
+    Serial.println((uint32_t) _first);
   }
   _size++;
 }
 
-template<typename T>
+template<class T>
 T _List<T>::first() const
 {
-  return _first->_item;
+  _Node<T>* node = _first;
+  T result = node->_item;
+  Serial.print("first: ");
+  Serial.println(result.toInt());
+  return result;
 }
 
-template<typename T>
+template<class T>
 T _List<T>::last() const
 {
   return _last->_item;
 }
 
-template<typename T>
+template<class T>
 T _List<T>::iterate()
 {  
-  if (_iterate == NULL || _iterate->_next == NULL)
+  if (_iterate == 0 || _iterate->_next == 0)
   {
     _iterate = _first;
   }
@@ -121,7 +157,7 @@ T _List<T>::iterate()
   return _iterate->_item;
 }
 
-template<typename T>
+template<class T>
 T _List<T>::get(uint32_t index) const
 {
   if (index > (_size - 1))
@@ -129,7 +165,7 @@ T _List<T>::get(uint32_t index) const
     return T();
   }
 
-  boost::shared_ptr<_Node<T> > result = _first;
+  _Node<T> result = _first;
 
   for (uint32_t i = 0; i < index; i++)
   {
@@ -139,10 +175,56 @@ T _List<T>::get(uint32_t index) const
   return result->_item;
 }
 
-template<typename T>
+template<class T>
 uint32_t _List<T>::size() const
 {
   return _size;
+}
+
+template<class T>
+bool _List<T>::empty() const
+{
+  return size() == 0;
+}
+
+template<class T>
+void _List<T>::copy(const _List<T>& other)
+{
+  if (other.empty()) {
+    _first = 0;
+    _last = 0;
+    _iterate = 0;
+    return;
+  }
+
+  //TODO: Doubly linked list
+  
+  _Node<T> *pp = other._first;
+  _Node<T> *pt = new _Node<T>(pp->_item);
+  _first = pt;
+
+  while (pp->_next != 0) {
+    pp = pp->_next;
+    pt->_next = new _Node<T>(pp->_item);
+    pt = pt->_next;
+  }
+}
+
+template<class T>
+void _List<T>::clear()
+{
+  //TODO: Doubly linked list
+
+  _Node<T> *next, *pp(_first);
+
+  while(pp != 0) {
+    next = pp->_next;
+    pp->_next = 0;
+    delete pp;
+    pp = next;
+  }
+
+  _first = 0;
 }
 
 #endif

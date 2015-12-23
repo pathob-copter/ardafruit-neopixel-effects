@@ -15,24 +15,27 @@ namespace AdafruitNeopixelEffects
       _Color(uint32_t color);
       _Color(uint8_t r, uint8_t g, uint8_t b);
       _Color(const _Color& other);
-  
-  	  ~_Color() {};
+  	  ~_Color();
+
+      _Color& operator=(const _Color& other);
   	
-      uint32_t toInt();
+      uint32_t toInt() const;
       
-      uint8_t red();
-      uint8_t green();
-      uint8_t blue();
+      uint8_t red() const;
+      uint8_t green() const;
+      uint8_t blue() const;
   
       void applyBrightness(uint8_t brightness);
   
     private:
-  
+    
+      void copy(const _Color& other);
+
       uint32_t _color;
       
   };
   
-  typedef boost::shared_ptr<_Color> Color;
+  typedef _Color* Color;
 
 }
 
@@ -56,25 +59,35 @@ _Color::_Color(uint8_t r, uint8_t g, uint8_t b)
 
 _Color::_Color(const _Color& other)
 {
-  _color = other._color;
+  copy(other);
 }
 
-uint32_t _Color::toInt()
+_Color::~_Color()
+{
+  //TODO
+}
+
+_Color& _Color::operator=(const _Color& other)
+{
+  copy(other);
+}
+
+uint32_t _Color::toInt() const
 {
   return _color;
 }
 
-uint8_t _Color::red()
+uint8_t _Color::red() const
 {
   return (_color >> 16) & 255;
 }
 
-uint8_t _Color::green()
+uint8_t _Color::green() const
 {
   return (_color >> 8) & 255;
 }
 
-uint8_t _Color::blue()
+uint8_t _Color::blue() const
 {
   return _color & 255;
 }
@@ -87,8 +100,13 @@ void _Color::applyBrightness(uint8_t brightness)
 
   // Todo: Should use a static function instead
   // Todo: unprecise result
-  Color color = boost::make_shared<_Color>(r, g, b);
-  _color = color->toInt();
+  _Color color = _Color(r, g, b);
+  _color = color.toInt();
+}
+
+void _Color::copy(const _Color& other)
+{
+  _color = other._color;
 }
 
 #endif
