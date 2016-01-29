@@ -1,7 +1,7 @@
 #ifndef ADAFRUITNEOPIXELEFFECTS_COLOR_H
 #define ADAFRUITNEOPIXELEFFECTS_COLOR_H
 
-#include "Definitions.h"
+#include "Adafruit_NeoPixel_Effects.h"
 
 namespace AdafruitNeopixelEffects
 {

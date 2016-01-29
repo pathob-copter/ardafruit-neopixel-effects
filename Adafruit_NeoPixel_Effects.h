@@ -17,11 +17,17 @@ namespace AdafruitNeopixelEffects
   // Debugging
 
   #ifdef DEBUG
+  typedef int int8_t;
+  typedef int int16_t;
+  typedef int int32_t;
+  
   typedef int uint8_t;
+  typedef int uint16_t;
   typedef int uint32_t;
 
-  _Serial Serial;
+  typedef bool boolean;
 
+  _Serial Serial;
   #endif
 
   // Base classes

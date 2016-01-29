@@ -1,7 +1,7 @@
 #ifndef ADAFRUITNEOPIXELEFFECTS_LIST_H
 #define ADAFRUITNEOPIXELEFFECTS_LIST_H
 
-#include "Definitions.h"
+#include "Adafruit_NeoPixel_Effects.h"
 
 namespace AdafruitNeopixelEffects
 {

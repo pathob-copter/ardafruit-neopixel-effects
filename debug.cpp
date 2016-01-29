@@ -1,8 +1,7 @@
 #define DEBUG
 
 #include <iostream>
-#include "List.h"
-#include "Color.h"
+#include "Adafruit_NeoPixel_Effects.h"
 
 using namespace std;
 using namespace AdafruitNeopixelEffects;
