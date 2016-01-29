@@ -83,7 +83,7 @@ void _ColorGenerator::addColor(const _Color& color)
 
 _Color _ColorGenerator::getNextColor()
 {
-  _Color color = _colors.first();
+  _Color color = _colors.iterate();
   Serial.print("getNextColor: ");
   Serial.println(color.toInt());
   return color;
