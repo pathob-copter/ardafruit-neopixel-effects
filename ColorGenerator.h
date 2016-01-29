@@ -3,11 +3,12 @@
 #ifndef ADAFRUITNEOPIXELEFFECTS_COLORGENERATOR_H
 #define ADAFRUITNEOPIXELEFFECTS_COLORGENERATOR_H
 
-#include "Color.h"
-#include "List.h"
+#include "Adafruit_NeoPixel_Effects.h"
 
 namespace AdafruitNeopixelEffects
 {
+  typedef _List<_Color> _ColorList;
+
   class _ColorGenerator
   {
   
@@ -52,8 +53,8 @@ _ColorGenerator::_ColorGenerator()
 }
 
 _ColorGenerator::_ColorGenerator(const _Color& color)
-  : _ColorGenerator()
 {
+  _colors = _ColorList();
   Serial.print("_ColorGenerator: ");
   Serial.println(color.toInt());
   _colors.add(color);
