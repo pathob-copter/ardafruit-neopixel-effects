@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef ADAFRUITNEOPIXELEFFECTS_LIST_H
 #define ADAFRUITNEOPIXELEFFECTS_LIST_H
 
@@ -58,23 +56,20 @@ namespace AdafruitNeopixelEffects
   
   };
   
-  typedef _List<_Color> _ColorList;
-  typedef _List<_Color>* ColorList;
-  
 }
 
 using namespace AdafruitNeopixelEffects;
 
 template<class T>
-_List<T>::_List() :
-  _first(0), _last(0), _iterate(0), _size(0)
+_List<T>::_List()
+  : _first(0), _last(0), _iterate(0), _size(0)
 {
   Serial.println("Create List");
 }
 
 template<class T>
 _List<T>::_List(T array[], uint32_t size)
-  : _List()
+  : _first(0), _last(0), _iterate(0), _size(0)
 {
   for (uint32_t i = 0; i < size; i++)
   {
@@ -121,7 +116,7 @@ void _List<T>::add(T item)
   {
     Serial.println("_first = node;");
     _first = node;
-    Serial.println((uint32_t) _first);
+    Serial.println(_first->_item.toInt());
   }
   _size++;
 }
@@ -165,7 +160,7 @@ T _List<T>::get(uint32_t index) const
     return T();
   }
 
-  _Node<T> result = _first;
+  _Node<T>* result = _first;
 
   for (uint32_t i = 0; i < index; i++)
   {
