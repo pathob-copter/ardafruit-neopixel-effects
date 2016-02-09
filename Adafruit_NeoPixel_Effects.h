@@ -28,4 +28,7 @@ namespace AdafruitNeopixelEffects
 #include "Color.h"
 #include "ColorGenerator.h"
 
+#include "LightEffect.h"
+#include "RunningLight.h"
+
 #endif

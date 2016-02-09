@@ -81,9 +81,6 @@ _ColorGenerator& _ColorGenerator::operator=(const _ColorGenerator& other)
 void _ColorGenerator::addColor(const _Color& color)
 {
   _colors.add(color);
-  if (_colors.size() == 1) {
-      _colorFadeTo = color;
-  }
 }
 
 _Color _ColorGenerator::getColor()
@@ -95,11 +92,13 @@ _Color _ColorGenerator::getColor()
         return _colorFadeFrom;
     }
     
+    float stepWidth = (float) _fadeStepsDone / _fadeSteps;
     _fadeStepsDone++;
+
     return _Color(
-        _colorFadeFrom.red()   + ((float) (_colorFadeTo.red()   - _colorFadeFrom.red())   * _fadeStepsDone) / _fadeSteps,
-        _colorFadeFrom.green() + ((float) (_colorFadeTo.green() - _colorFadeFrom.green()) * _fadeStepsDone) / _fadeSteps,
-        _colorFadeFrom.blue()  + ((float) (_colorFadeTo.blue()  - _colorFadeFrom.blue())  * _fadeStepsDone) / _fadeSteps
+        _colorFadeFrom.red()   + (_colorFadeTo.red()   - _colorFadeFrom.red())   * stepWidth,
+        _colorFadeFrom.green() + (_colorFadeTo.green() - _colorFadeFrom.green()) * stepWidth,
+        _colorFadeFrom.blue()  + (_colorFadeTo.blue()  - _colorFadeFrom.blue())  * stepWidth
     );
 }
 

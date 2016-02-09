@@ -13,36 +13,24 @@ namespace AdafruitNeopixelEffects
   
     public:
   
-      _LightEffect(Adafruit_NeoPixel stripe)
+      _LightEffect(Adafruit_NeoPixel& stripe)
       {
-        _stripe = stripe;
-        _ledIndexStart = 0;
-        _ledIndexEnd = stripe.numPixels() - 1;
-        // FIXME
-        // _brightness;
-        _colorGenerator = _ColorGenerator();
+          init(stripe);
       };
   
-      _LightEffect(Adafruit_NeoPixel stripe, const _Color& color)
-        : _LightEffect(stripe)
+      _LightEffect(Adafruit_NeoPixel& stripe, const _Color& color)
       {
-        _colorGenerator = _ColorGenerator(color);
+          init(stripe);
+          _colorGenerator = _ColorGenerator(color);
       };
   
-      _LightEffect(Adafruit_NeoPixel stripe, _ColorGenerator const& colorGenerator)
-        : _LightEffect(stripe)
+      _LightEffect(Adafruit_NeoPixel& stripe, _ColorGenerator const& colorGenerator)
       {
-        _colorGenerator = colorGenerator;
+          init(stripe);
+          _colorGenerator = colorGenerator;
       };
   
       ~_LightEffect(){};
-      
-      void setColor(const _Color& color)
-      {
-        Serial.print("setColor: ");
-        Serial.println(color.toInt());
-        _colorGenerator = _ColorGenerator(color);
-      };
   
       void addColor(_Color color)
       {
@@ -59,18 +47,23 @@ namespace AdafruitNeopixelEffects
   
       void addBrightnessElement(uint8_t brightness)
       {
-        // _brightness->add(brightness);
+          _brightness.add(brightness);
       }
       
       virtual void run() = 0;
       
       // light effect attributes
       _ColorGenerator _colorGenerator;
-      // Uint8List _brightness;
+      _List<uint8_t> _brightness;
       
     protected:
   
-      virtual void init() = 0;
+      void init(Adafruit_NeoPixel& stripe)
+      {
+          _stripe = stripe;
+          _ledIndexStart = 0;
+          _ledIndexEnd = stripe.numPixels() - 1;
+      }
       
       // stripe attributes
       Adafruit_NeoPixel _stripe;

@@ -23,8 +23,9 @@ namespace AdafruitNeopixelEffects
   	
       void run() override
       {
-        _Color color = _colorGenerator.getNextColor();
-        //color.applyBrightness(_brightness->iterate());
+        _Color color = _colorGenerator.getColor();
+        Serial.println(color.toInt());
+        color.applyBrightness(_brightness.iterate());
         
         for(int i = _ledIndexEnd; i > _ledIndexStart; i--) {
           _stripe.setPixelColor(i, _stripe.getPixelColor(i - 1));
@@ -34,7 +35,7 @@ namespace AdafruitNeopixelEffects
       }
     
     private:
-  
+  	  
       bool _reverted;
   
   };

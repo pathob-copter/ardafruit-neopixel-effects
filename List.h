@@ -98,14 +98,14 @@ _List<T>& _List<T>::operator=(const _List<T>& other)
 template<class T>
 void _List<T>::add(T item)
 {
-  Serial.print("add: ");
-  Serial.println(item.toInt());
+//  Serial.print("add: ");
+//  Serial.println(item.toInt());
   
   _Node<T>* prev = _last;
   _Node<T>* node = new _Node<T>(item, prev);
 
-  Serial.print("Node: ");
-  Serial.println(node->_item.toInt());
+//  Serial.print("Node: ");
+//  Serial.println(node->_item.toInt());
   
   _last = node;
   if (prev != 0)
@@ -114,9 +114,9 @@ void _List<T>::add(T item)
   }
   else
   {
-    Serial.println("_first = node;");
+//    Serial.println("_first = node;");
     _first = node;
-    Serial.println(_first->_item.toInt());
+//    Serial.println(_first->_item.toInt());
   }
   _size++;
 }
@@ -126,8 +126,8 @@ T _List<T>::first() const
 {
   _Node<T>* node = _first;
   T result = node->_item;
-  Serial.print("first: ");
-  Serial.println(result.toInt());
+//  Serial.print("first: ");
+//  Serial.println(result.toInt());
   return result;
 }
 
