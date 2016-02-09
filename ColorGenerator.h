@@ -22,8 +22,9 @@ namespace AdafruitNeopixelEffects
       _ColorGenerator& operator=(const _ColorGenerator& other);
   
       void addColor(const _Color& color);
+      void addColorFade(const _Color& color, uint16_t steps);
   
-      _Color getNextColor();
+      _Color getColor();
   
       /** 
        * All colors that has to be gone through 
@@ -31,13 +32,15 @@ namespace AdafruitNeopixelEffects
       _ColorList _colors;
     
     private:
+    
+      _Color getNextColor();
+      
+      _Color _colorFadeFrom;
+      _Color _colorFadeTo;
+      uint16_t _fadeSteps = 100;
+      uint16_t _fadeStepsDone = 0;
 
       void copy(const _ColorGenerator& other);
-  
-      /**
-       * Current (intermediate) color in color generating process
-       */
-      _Color _currentColor;
   
   };
   
@@ -58,7 +61,6 @@ _ColorGenerator::_ColorGenerator(const _Color& color)
   Serial.print("_ColorGenerator: ");
   Serial.println(color.toInt());
   _colors.add(color);
-  _currentColor = color;
 }
 
 _ColorGenerator::_ColorGenerator(const _ColorGenerator& other)
@@ -79,6 +81,26 @@ _ColorGenerator& _ColorGenerator::operator=(const _ColorGenerator& other)
 void _ColorGenerator::addColor(const _Color& color)
 {
   _colors.add(color);
+  if (_colors.size() == 1) {
+      _colorFadeTo = color;
+  }
+}
+
+_Color _ColorGenerator::getColor()
+{
+    if (_fadeStepsDone == _fadeSteps) {
+        _colorFadeFrom = _colorFadeTo;
+        _colorFadeTo = _colors.iterate();
+        _fadeStepsDone = 0;
+        return _colorFadeFrom;
+    }
+    
+    _fadeStepsDone++;
+    return _Color(
+        _colorFadeFrom.red()   + ((float) (_colorFadeTo.red()   - _colorFadeFrom.red())   * _fadeStepsDone) / _fadeSteps,
+        _colorFadeFrom.green() + ((float) (_colorFadeTo.green() - _colorFadeFrom.green()) * _fadeStepsDone) / _fadeSteps,
+        _colorFadeFrom.blue()  + ((float) (_colorFadeTo.blue()  - _colorFadeFrom.blue())  * _fadeStepsDone) / _fadeSteps
+    );
 }
 
 _Color _ColorGenerator::getNextColor()
