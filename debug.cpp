@@ -1,4 +1,6 @@
-#define DEBUG
+//#define DEBUG
+
+#ifdef DEBUG
 
 #include <iostream>
 #include "Adafruit_NeoPixel_Effects.h"
@@ -20,3 +22,5 @@ int main()
 
     return 0;
 }
+
+#endif
